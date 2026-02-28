@@ -1,0 +1,51 @@
+{
+  "agent_name": "Saved Content Agent",
+  "agent_id": "69a274eb71a7effa8577bff4",
+  "description": "Fetches saved posts and reels from Facebook via Graph API, parses and organizes the response into structured metadata (type, title, thumbnail URL, source link, date saved), and presents a clean summary to the user",
+  "agent_type": "json",
+  "accessor": "result.response.result",
+  "has_module_outputs": false,
+  "response_schema": {
+    "summary": "string",
+    "total_count": "number",
+    "posts_count": "number",
+    "reels_count": "number",
+    "items": [
+      {
+        "id": "string",
+        "type": "string",
+        "title": "string",
+        "thumbnail": "string",
+        "sourceUrl": "string",
+        "dateSaved": "string",
+        "author": "string"
+      }
+    ]
+  },
+  "example_response": {
+    "summary": "Found 12 saved items: 8 posts and 4 reels",
+    "total_count": 12,
+    "posts_count": 8,
+    "reels_count": 4,
+    "items": [
+      {
+        "id": "123456789",
+        "type": "Post",
+        "title": "Amazing sunset photo from my trip to Bali",
+        "thumbnail": "https://scontent.fbkk1-1.fna.fbcdn.net/v/example.jpg",
+        "sourceUrl": "https://www.facebook.com/photo/?fbid=123456789",
+        "dateSaved": "2026-02-28T10:30:00Z",
+        "author": "John Doe"
+      },
+      {
+        "id": "987654321",
+        "type": "Reel",
+        "title": "How to make the perfect espresso at home",
+        "thumbnail": "https://scontent.fbkk1-1.fna.fbcdn.net/v/reel_thumb.jpg",
+        "sourceUrl": "https://www.facebook.com/reel/987654321",
+        "dateSaved": "2026-02-27T15:45:00Z",
+        "author": "Coffee Masters"
+      }
+    ]
+  }
+}

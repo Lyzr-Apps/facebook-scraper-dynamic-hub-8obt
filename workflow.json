@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "User Query",
+      "nodeCategory": "input"
+    },
+    {
+      "id": "saved_content_agent",
+      "type": "Agent",
+      "label": "Saved Content Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "output_node",
+      "type": "Output",
+      "label": "Saved Items Output",
+      "nodeCategory": "end"
+    }
+  ],
+  "edges": [
+    {
+      "source": "input_node",
+      "target": "saved_content_agent"
+    },
+    {
+      "source": "saved_content_agent",
+      "target": "output_node"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "agent_name": "Saved Content Agent",
+  "agent_id": "69a274eb71a7effa8577bff4",
+  "description": "Fetches saved posts and reels from Facebook via Graph API, parses and organizes the response into structured metadata (type, title, thumbnail URL, source link, date saved), and presents a clean summary to the user",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "summary": "string",
+    "total_count": "number",
+    "posts_count": "number",
+    "reels_count": "number",
+    "items": [
+      {
+        "id": "string",
+        "type": "string",
+        "title": "string",
+        "thumbnail": "string",
+        "sourceUrl": "string",
+        "dateSaved": "string",
+        "author": "string"
+      }
+    ]
+  },
+  "example_response": {
+    "summary": "A brief summary of the fetched saved items",
+    "total_count": 0,
+    "posts_count": 0,
+    "reels_count": 0,
+    "items": [
+      {
+        "id": "Unique identifier of the saved item",
+        "type": "Content type: Post or Reel",
+        "title": "Title or caption snippet of the content",
+        "thumbnail": "URL to the thumbnail or preview image",
+        "sourceUrl": "Direct link to the original Facebook post or reel",
+        "dateSaved": "Date the item was saved in ISO format",
+        "author": "Name of the original poster or creator"
+      }
+    ]
+  },
+  "has_module_outputs": true,
+  "module_outputs_example": {
+    "artifact_files": [
+      {
+        "file_url": "https://example.com/image.png"
+      }
+    ]
+  }
+}
