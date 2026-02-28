@@ -21,6 +21,7 @@ interface DashboardProps {
   selectedIds: Set<string>
   filter: FilterType
   hasFetched: boolean
+  hasEmail: boolean
   onFetch: () => void
   onFilterChange: (f: FilterType) => void
   onToggleSelect: (id: string) => void
@@ -61,6 +62,7 @@ export default function Dashboard({
   selectedIds,
   filter,
   hasFetched,
+  hasEmail,
   onFetch,
   onFilterChange,
   onToggleSelect,
@@ -81,7 +83,7 @@ export default function Dashboard({
       {/* Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-3 flex-wrap">
-          <Button onClick={onFetch} disabled={loading} size="default" className="gap-2">
+          <Button onClick={onFetch} disabled={loading || !hasEmail} size="default" className="gap-2">
             <FaSync className={cn('w-3.5 h-3.5', loading && 'animate-spin')} />
             {loading ? 'Fetching...' : 'Fetch Saved Items'}
           </Button>
@@ -151,7 +153,13 @@ export default function Dashboard({
       )}
 
       {/* Empty States */}
-      {!loading && !hasFetched && !error && (
+      {!loading && !hasFetched && !error && !hasEmail && (
+        <EmptyState
+          message="Enter your Facebook email in Settings to link your account, then come back here to fetch your saved posts and reels."
+        />
+      )}
+
+      {!loading && !hasFetched && !error && hasEmail && (
         <EmptyState
           message="Click Fetch Saved Items to get started. Your saved Facebook posts and reels will appear here."
           showCta

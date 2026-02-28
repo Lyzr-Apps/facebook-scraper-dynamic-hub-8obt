@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { callAIAgent } from '@/lib/aiAgent'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
@@ -119,6 +119,17 @@ export default function Page() {
   const [error, setError] = useState('')
   const [hasFetched, setHasFetched] = useState(false)
 
+  // Facebook email state
+  const [facebookEmail, setFacebookEmail] = useState('')
+
+  // Load saved email from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('fb_saved_email')
+      if (saved) setFacebookEmail(saved)
+    } catch {}
+  }, [])
+
   // UI state
   const [filter, setFilter] = useState<FilterType>('all')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
@@ -134,13 +145,19 @@ export default function Page() {
 
   // ── Handlers ──
   const handleFetch = useCallback(async () => {
+    if (!facebookEmail.trim()) {
+      setError('Please go to Settings and enter your Facebook email first.')
+      return
+    }
+
     setLoading(true)
     setError('')
     setActiveAgentId(AGENT_ID)
     setSelectedIds(new Set())
 
     try {
-      const result = await callAIAgent('Fetch my saved Facebook posts and reels', AGENT_ID)
+      const message = `Fetch saved Facebook posts and reels for the account: ${facebookEmail.trim()}`
+      const result = await callAIAgent(message, AGENT_ID)
 
       if (result.success) {
         let data = result?.response?.result
@@ -168,7 +185,7 @@ export default function Page() {
       setLoading(false)
       setActiveAgentId(null)
     }
-  }, [])
+  }, [facebookEmail])
 
   const handleToggleSelect = useCallback((id: string) => {
     setSelectedIds((prev) => {
@@ -226,6 +243,7 @@ export default function Page() {
             selectedIds={selectedIds}
             filter={filter}
             hasFetched={displayHasFetched}
+            hasEmail={!!facebookEmail.trim()}
             onFetch={handleFetch}
             onFilterChange={setFilter}
             onToggleSelect={handleToggleSelect}
@@ -234,7 +252,13 @@ export default function Page() {
           />
         )}
 
-        {activeTab === 'settings' && <Settings agentId={AGENT_ID} />}
+        {activeTab === 'settings' && (
+          <Settings
+            agentId={AGENT_ID}
+            facebookEmail={facebookEmail}
+            onEmailChange={setFacebookEmail}
+          />
+        )}
 
         {/* Agent Status */}
         <div className="fixed bottom-4 left-4 z-30">
